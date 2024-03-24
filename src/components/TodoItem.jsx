@@ -3,9 +3,10 @@ export default function TodoItem({ todo }) {
   const deleteTodo = useStore((state) => state.deleteTodo);
   const toggleTodo = useStore((state) => state.toggleTodo);
   return (
-    <li className="border border-slate-300 p-2">
+    <li className="border border-slate-300 bg-slate-50 p-2">
       <input
         type="checkbox"
+        className="bg-slate-50 w-10"
         checked={todo.completed}
         onChange={() => toggleTodo(todo.id)}
       />
