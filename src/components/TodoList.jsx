@@ -1,3 +1,4 @@
+import { useState } from "react";
 import useStore from "../useStore";
 import TodoItem from "./TodoItem";
 
@@ -11,6 +12,7 @@ export default function TodoList() {
   const editTodo = useStore((state) => state.editTodo);
   const setEditTodoId = useStore((state) => state.setEditTodoId);
   const editTodoId = useStore((state) => state.editTodoId);
+  const [editFormStyle, setEditFormStyle] = useState(null);
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -26,6 +28,7 @@ export default function TodoList() {
     if (editTodoId !== null) {
       editTodo(editTodoId, text);
       setEditTodoId(null);
+      setEditFormStyle(null); // Reset the edit form style
     } else {
       addTodo(text);
     }
@@ -35,6 +38,17 @@ export default function TodoList() {
   const handleEditClick = (id, text) => {
     setText(text);
     setEditTodoId(id);
+    setEditFormStyle({
+      width: "100%",
+      height: "100%",
+      overflow: "auto",
+      position: "fixed",
+      zIndex: 2,
+      backgroundColor: "rgba(0, 0, 0, 0.4)",
+      top: 0,
+      left: 0,
+      bottom: 0,
+    });
   };
 
   const closePopup = () => {
@@ -44,20 +58,25 @@ export default function TodoList() {
   return (
     <>
       <form onSubmit={handleSubmit} className="mt-10">
-        <div className="flex items-center justify-center">
-          <input
-            className="shadow-md bg-slate-50 rounded p-2"
-            type="text"
-            placeholder="add todo..."
-            value={text}
-            onChange={handleChange}
-          />
-          <button type="submit" className="bg-green-500 rounded p-2 text-white">
-            {editTodoId !== null ? "Save" : "Add Todo"}
-          </button>
+        <div style={editFormStyle}>
+          <div className="flex items-center justify-center mt-20">
+            <input
+              className="shadow-md bg-slate-50 rounded p-2 mr-3"
+              type="text"
+              placeholder="add todo..."
+              value={text}
+              onChange={handleChange}
+            />
+            <button
+              type="submit"
+              className="bg-green-500 rounded p-2 text-white"
+            >
+              {editTodoId !== null ? "Save" : "Add Todo"}
+            </button>
+          </div>
         </div>
       </form>
-      <ul>
+      <ul className="mt-4">
         {todos.map((todo) => (
           <TodoItem key={todo.id} todo={todo} onEdit={handleEditClick} />
         ))}
