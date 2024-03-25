@@ -1,4 +1,3 @@
-import { useState } from "react";
 import useStore from "../useStore";
 import TodoItem from "./TodoItem";
 
@@ -12,7 +11,8 @@ export default function TodoList() {
   const editTodo = useStore((state) => state.editTodo);
   const setEditTodoId = useStore((state) => state.setEditTodoId);
   const editTodoId = useStore((state) => state.editTodoId);
-  const [editFormStyle, setEditFormStyle] = useState(null);
+  const editFormStyle = useStore((state) => state.editFormStyle);
+  const setEditFormStyle = useStore((state) => state.setEditFormStyle);
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -28,7 +28,7 @@ export default function TodoList() {
     if (editTodoId !== null) {
       editTodo(editTodoId, text);
       setEditTodoId(null);
-      setEditFormStyle(null); // Reset the edit form style
+      setEditFormStyle(null);
     } else {
       addTodo(text);
     }

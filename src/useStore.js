@@ -5,6 +5,12 @@ const useStore = create((set) => ({
   text: "",
   showPopup: false,
   editTodoId: null,
+  editFormStyle: null,
+  setEditFormStyle: (style) =>
+    set(() => ({
+      editFormStyle: style,
+    })),
+
   addTodo: (text) =>
     set((state) => ({
       todos: [
