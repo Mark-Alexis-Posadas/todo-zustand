@@ -1,12 +1,16 @@
-import { useState } from "react";
 import useStore from "../useStore";
 import TodoItem from "./TodoItem";
 
 export default function TodoList() {
   const todos = useStore((state) => state.todos);
   const addTodo = useStore((state) => state.addTodo);
-
-  const [text, setText] = useState("");
+  const text = useStore((state) => state.text);
+  const setText = useStore((state) => state.setText);
+  const showPopup = useStore((state) => state.showPopup);
+  const setShowPopup = useStore((state) => state.setShowPopup);
+  const editTodo = useStore((state) => state.editTodo);
+  const setEditTodoId = useStore((state) => state.setEditTodoId);
+  const editTodoId = useStore((state) => state.editTodoId);
 
   const handleChange = (e) => {
     setText(e.target.value);
@@ -15,12 +19,26 @@ export default function TodoList() {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (text.trim() === "") {
-      alert("Add title");
-      return; // Stop the function execution if the input is empty
+      setShowPopup(true);
+      return;
     }
 
-    addTodo(text);
+    if (editTodoId !== null) {
+      editTodo(editTodoId, text);
+      setEditTodoId(null);
+    } else {
+      addTodo(text);
+    }
     setText("");
+  };
+
+  const handleEditClick = (id, text) => {
+    setText(text);
+    setEditTodoId(id);
+  };
+
+  const closePopup = () => {
+    setShowPopup(false);
   };
 
   return (
@@ -35,15 +53,24 @@ export default function TodoList() {
             onChange={handleChange}
           />
           <button type="submit" className="bg-green-500 rounded p-2 text-white">
-            Add Todo
+            {editTodoId !== null ? "Save" : "Add Todo"}
           </button>
         </div>
       </form>
       <ul>
         {todos.map((todo) => (
-          <TodoItem key={todo.id} todo={todo} />
+          <TodoItem key={todo.id} todo={todo} onEdit={handleEditClick} />
         ))}
       </ul>
+
+      {showPopup && (
+        <div className="popup">
+          <div className="popup-content">
+            <p>Please add a todo.</p>
+            <button onClick={closePopup}>OK</button>
+          </div>
+        </div>
+      )}
     </>
   );
 }
