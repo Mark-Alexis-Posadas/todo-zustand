@@ -3,13 +3,18 @@ import useStore from "../useStore";
 export default function TodoItem({ todo, onEdit }) {
   const deleteTodo = useStore((state) => state.deleteTodo);
   const toggleTodo = useStore((state) => state.toggleTodo);
+  const editTodoId = useStore((state) => state.editTodoId);
 
   const handleEdit = () => {
     onEdit(todo.id, todo.text);
   };
 
   return (
-    <li className="mb-2 rounded bg-slate-50 shadow-md p-2 flex items-center justify-between">
+    <li
+      className={`mb-2 rounded bg-slate-50 shadow-md p-2 flex items-center justify-between ${
+        editTodoId === todo.id ? "border-green-500 border-2" : ""
+      }`}
+    >
       <input
         type="checkbox"
         className="bg-slate-50 w-10"

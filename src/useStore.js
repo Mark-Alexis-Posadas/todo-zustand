@@ -6,10 +6,6 @@ const useStore = create((set) => ({
   showPopup: false,
   editTodoId: null,
   editFormStyle: null,
-  setEditFormStyle: (style) =>
-    set(() => ({
-      editFormStyle: style,
-    })),
 
   addTodo: (text) =>
     set((state) => ({
@@ -55,6 +51,11 @@ const useStore = create((set) => ({
       todos: state.todos.map((todo) =>
         todo.id === id ? { ...todo, text: text } : todo
       ),
+    })),
+
+  setEditFormStyle: (style) =>
+    set(() => ({
+      editFormStyle: style,
     })),
 }));
 
