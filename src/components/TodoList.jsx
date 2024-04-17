@@ -1,6 +1,5 @@
 import useStore from "../useStore";
 import TodoItem from "./TodoItem";
-
 export default function TodoList() {
   const todos = useStore((state) => state.todos);
   const addTodo = useStore((state) => state.addTodo);
